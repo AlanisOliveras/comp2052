@@ -14,10 +14,18 @@ def info():
 #Ruta de POST
 @app.route("/mensaje", methods=["POST"])
 def mensaje():
-    data = request.get_json()
-    nombre = data.get("nombre", "Usuario")
-    respuesta = {"respuesta": f"Hola {nombre}, Gracias por tu mensale!"}
-    return jsonify(respuesta)
+    print("Metodo recibido:", request.method)
+    if request.method == 'POST':
+        data = request.get_json()
+        nombre = data.get("nombre", "Usuario")
+        return jsonify({
+            "respuesta": f"Hola, {nombre}. He recibido tu mensaje: '{mensaje}' "
+        })
+    else:
+        return jsonify({
+            "mensaje": "Tiene que utilizar la ruta POST para poder enviar un mensaje"
+        })
+
      
 if __name__ == "__main__":
     app.run(debug=True)
