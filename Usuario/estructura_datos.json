@@ -1,7 +1,29 @@
 {
     "usuarios": 
     [
+        {
+        "id": 1, 
         "nombre": "Alanis",
-        "correo": "alanis@gmail.com"
+        "correo": "alanis@gmail.com",
+        "Productos_favoritos": [101, 102]
+        }
+    ],
+
+    "productos": 
+    [
+        {
+            "id": 101,
+            "nombre": "Laptop",
+            "descripcion": "Lapton de 15 pulgadas",
+            "precio": 900.00,
+            "stock": 30
+        },
+
+        {
+            "id": "Mouse Inalámbrico ",
+            "nombre": "Mouse Bluetooth",
+            "precio":28.50,
+            "stock": 20
+        }
     ]
 }
