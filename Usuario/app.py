@@ -2,10 +2,12 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+usuario = []
+
 # Ruta GET /info
 @app.route("/info", methods=["GET"])
 def info():
-    ({
+    return jsonify ({
     "sistema": "Gestor de usuarios ",
     "version": "1.0",
     "descripcion": "API para crear y listar usuarios"
@@ -32,3 +34,4 @@ def obtener_usuario():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
