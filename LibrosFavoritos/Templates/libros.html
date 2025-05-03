@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html Land="es">
-    <head>
-        <meta charset=""UTF-8>
-        <title>Lista de Libros</title>
-    </head>
+{% extends "base.html" %}
 
-    <body>
-        <h2>Mis Libros Favoritos</h2>
-        <ul>
-            {% for libro in libros%}
-            <li><strong>{{libro.titulo}}</strong> - {{libro.autor}}</li>
-            {% endfor %}
-        </ul>
-        <a href="'/">Volver al inicio</a>
-    </body>
-</html>
+{% block titulo %}Libros{% endblock %}
+
+{% block contenido %}
+    <h2>Lista de Libros</h2>
+    <ul>
+        {% for libro in libros %}
+        <li>{{ libro.titulo }} - {{ libro.autor }}</li>
+        {% endfor %}
+
+    </ul>
+
+    {% endblock %}

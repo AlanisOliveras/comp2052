@@ -3,14 +3,16 @@
     <head>
         <meta charset="UTF-8">
         <tittle>{{ titulo}}</tittle>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
         <header>
             <h1>Bienvenido a mi biblioteca de libros favoritos </h1>
                 <nav>
-                    <a href="'/">Inicio</a>
-                    <a href="'/">Libros</a>
-                    <a href="'/">Autores</a>
+                    <a href="{{ url_for('index') }}">Inicio</a>
+                    <a href="{{ url_for('mostrar_libros') }}">Libros</a>
+                    <a href="{{ url_for ('mostrar_autores') }}">Autores</a>
+                    <a href="{{ url_for('recomendaciones_view') }}">Recomendaciones</a>
                 </nav>
         </header>
 

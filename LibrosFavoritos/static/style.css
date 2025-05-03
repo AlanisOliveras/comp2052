@@ -1,0 +1,47 @@
+body
+{
+    font-family :Georgia, 'Times New Roman', Times, serif;
+    background-color: #f0f0f5;
+    margin: 0;
+   background-color: #f4f4f4;
+}
+
+header
+{
+    background-color: #003366;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a 
+{
+    margin: 0 15px;
+    color: white;
+    text-decoration: none;
+}
+
+main
+{
+    padding: 20px;
+}
+
+ul
+{
+    list-style: none;
+    padding: 0;
+}
+
+form
+{
+    margin-top: 10px;
+}
+
+button
+{
+    margin-left: 10px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+}

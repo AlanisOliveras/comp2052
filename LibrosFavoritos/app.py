@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -9,6 +9,9 @@ libros = [
 ]
 
 autores = ["James Dashner", "C. S. Lewis", "Rick Riordan"]
+
+recomendaciones = []
+
 
 @app.route('/', methods=["GET"])
 def index():
@@ -22,5 +25,23 @@ def mostrar_libros():
 def mostrar_autores():
     return render_template("autores.html",titulo="Autores", autores=autores)
 
-if __name__== '__man__':
+@app.route('/recomendaciones', methods=['GET', 'POST'])
+def recomendaciones_view():
+    if request.method == 'POST':
+        texto = request.form.get('recomendacion', '').strip()
+        if texto:
+            recomendaciones.append(texto)
+        return redirect(url_for('recomendaciones_view'))
+
+    return render_template("recomendaciones.html", titulo="Recomendaciones", recomendaciones=recomendaciones)
+
+
+@app.route('/eliminar_recomendacion/<int:index>', methods=['POST'])
+def eliminar_recomendacion(index):
+    if 0 <= index < len(recomendaciones):
+        recomendaciones.pop(index)
+        return redirect(url_for('recomendaciones_view'))
+    
+
+if __name__== '__main__':
     app.run(debug=True)
