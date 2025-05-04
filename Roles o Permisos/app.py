@@ -1,75 +1,33 @@
-from flask import Flask, redirect, url_for, render_template
-from flask_principal import Principal, Permission, RoleNeed, Identity, AnonymousIdentity, identity_changed, identity_loaded
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask import Flask, render_template, request
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Email, Length
 
 app = Flask(__name__)
-app.secret_key = 'secretkey'
+app.config["SECRET_KEY"] = "clave_segura"
 
-login_manager = LoginManager(app)
-login_manager.init_app(app)
+class RegistroForm(FlaskForm):
+    nombre = StringField("Nombre", validators=[
+        DataRequired(message="El nombre es obligatorio."),
+        Length(min=3, message="Debe tener al menos 3 caracteres.")
+    ])
+    correo = StringField("Correo", validators=[
+        DataRequired(message="El correo es obligatorio."),
+        Email(message="Formato de correo no válido.")
+    ])
+    password = PasswordField("Contraseña", validators=[
+        DataRequired(message="La contraseña es obligatoria."),
+        Length(min=6, message="Debe tener al menos 6 caracteres.")
+    ])
+    submit = SubmitField("Registrarse")
 
-Principal(app)
-
-admin_permission = Permission(RoleNeed('admin'))
-user_permission = Permission(RoleNeed('user'))
-
-class User(UserMixin):
-    def __init__(self,id, username, role):
-        self.id = id
-        self.username = username
-        self.role = role
-
-users ={
-   "Kaleb": User(1, "Kaleb", role=["user"]),
-   "Laura": User(2, "Laura", role=["admin"])
-}
-
-@login_manager.user_loader
-def load_user(user_id):
-    for user in users.values():
-        if str(user.id) == str(user_id):
-            return user
-    return None
-
-@identity_loaded.connect_via(app)
-def on_identity_loaded(sender, identity):
-    if hasattr(current_user, 'role'):
-        for role in current_user.role:
-            identity.provides.add(RoleNeed(role))
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route ('/login/<username>')
-def login(username):
-    user = users.get(username)
-    if user:
-        login_user(user)
-        identity_changed.send(app, identity=Identity(user.id))
-        return redirect(url_for('index'))
-    return 'Usuario no encontrado', 404
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    identity_changed.send(app, identity=AnonymousIdentity())
-    return redirect(url_for('index'))
-
-@app.route('/admin')
-@login_required
-@admin_permission.require(http_exception=403)
-def admin():
-    return 'Bienvenido Administrador'
-
-@app.route('/profile')
-@login_required
-@user_permission.require(http_exception=403)
-def profile():
-    return f'Bienvenido {current_user.username}'
+@app.route("/", methods=["GET", "POST"])
+def registro():
+    form = RegistroForm()
+    if form.validate_on_submit():
+        nombre = form.nombre.data
+        return render_template("home.html", mensaje=f"Usuario {nombre} registrado correctamente.")
+    return render_template("register.html", form=form)
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
